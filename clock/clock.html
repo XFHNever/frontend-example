@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>Clock</title>
+<style type="text/css">
+	.clock {
+		position: relative;
+		width: 800px;
+		height: 800px;
+		background-image: url(http://events.dianping.com/active/campus/clock1.png);
+		background-position:-160px 0px;
+		margin: 30px auto;
+	}
+
+	.clock .hour, .minute, .second{
+		background-image: url(http://events.dianping.com/active/campus/clock1.png);
+		position:absolute;
+		width:35px;
+		height:800px;
+		top:0px;
+		left:400px;
+		margin-top:30px;
+	}
+	.clock .hour{
+		background-position:-120px -300px;
+		z-index:1;
+		
+	}
+	.minute{
+		background-position:-70px -300px;
+		z-index:2;
+		-webkit-transform: rotate(20deg);
+  		-moz-transform: rotate(20deg);
+	}
+	.second{
+		background-position:-20px -300px;
+		z-index:3;
+		-webkit-transform: rotate(45deg);
+  		-moz-transform: rotate(45deg);
+	}
+</style>
+
+</head>
+
+<body>
+	<div class="clock"> 
+		<div class="hour"></div>
+		<div class="minute"></div>
+		<div class="second"></div>
+	</div>
+	<button id="btn">Run</button>
+	<div id="run"></div>
+
+
+<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript">
+	function Clock(dom) {
+		this.dom = dom;
+		var $clock = $('.clock');
+		this.dom.appendChild($clock[0]);
+		
+		this.setTime = function(hour, minute, second) {
+			//获取组件
+			var $hour = $('.hour');
+			var $minute = $('.minute');
+			var $second = $('.second');
+			
+			//计算偏移角度
+			var hour_degreee = hour*30 + minute/2;
+			var second_rotate = 'rotate(' + second*6 + 'deg)'; 
+			var minute_rotate = 'rotate(' + minute*6 + 'deg)'; 
+			var hour_rotate = 'rotate(' + hour_degreee + 'deg)'; 
+			
+			//修改css
+			$second.css({'-moz-transform' : second_rotate, '-webkit-transform' : second_rotate});
+			$minute.css({'-moz-transform' : minute_rotate, '-webkit-transform' : minute_rotate});
+			$hour.css({'-moz-transform' : hour_rotate, '-webkit-transform' : hour_rotate});
+			
+		};
+		
+		this.run = function() {
+			setInterval (function() {
+				//获取组件
+				var $hour = $('.hour');
+				var $minute = $('.minute');
+				var $second = $('.second');
+				
+				//获取现在时间
+				var hour = new Date().getHours();
+				var minute = new Date().getMinutes();
+				var second = new Date().getSeconds();
+				
+				//计算偏移角度
+				var hour_degreee = hour*30 + minute/2;
+				var second_rotate = 'rotate(' + second*6 + 'deg)'; 
+				var minute_rotate = 'rotate(' + minute*6 + 'deg)'; 
+				var hour_rotate = 'rotate(' + hour_degreee + 'deg)'; 
+				
+				//修改css
+				$second.css({'-moz-transform' : second_rotate, '-webkit-transform' : second_rotate});
+				$minute.css({'-moz-transform' : minute_rotate, '-webkit-transform' : minute_rotate});
+				$hour.css({'-moz-transform' : hour_rotate, '-webkit-transform' : hour_rotate});
+			}, 1000);		
+			
+		}
+		
+	}
+	$(document).ready(function(){
+	 	$('#btn').click(function() {
+			var $test = $('#run');
+			var clock = new Clock($test[0]);
+			clock.run();
+			$(this).hide();
+		});
+	});
+
+
+</script>
+</body>
+</html>
